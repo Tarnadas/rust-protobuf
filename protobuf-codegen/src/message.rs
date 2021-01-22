@@ -574,6 +574,11 @@ impl<'a> MessageGen<'a> {
         if self.lite_runtime {
             derive.push("Debug");
         }
+        if let Some(custom_derive) = self.customize.custom_derive.as_ref() {
+            custom_derive.iter().for_each(|d| {
+                derive.push(d);
+            });
+        }
         w.derive(&derive);
         serde::write_serde_attr(w, &self.customize, "derive(Serialize, Deserialize)");
         w.pub_struct(&format!("{}", self.type_name), |w| {
@@ -644,6 +649,13 @@ impl<'a> MessageGen<'a> {
 
     pub fn write(&self, w: &mut CodeWriter) {
         w.all_documentation(self.info, self.path);
+
+        if let Some(custom_use) = self.customize.custom_use.as_ref() {
+            for custom_use in custom_use {
+                w.write_line(format!("use {};", custom_use));
+            }
+        }
+
         self.write_struct(w);
 
         w.write_line("");
@@ -690,6 +702,12 @@ impl<'a> MessageGen<'a> {
             ));
             w.pub_mod(mod_name.get(), |w| {
                 let mut first = true;
+
+                if let Some(custom_use) = self.customize.custom_use.as_ref() {
+                    for custom_use in custom_use {
+                        w.write_line(format!("use {};", custom_use));
+                    }
+                }
 
                 for oneof in &oneofs {
                     w.write_line("");

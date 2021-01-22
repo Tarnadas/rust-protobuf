@@ -35,6 +35,8 @@ pub struct Customize {
     /// Used internally to generate protos bundled in protobuf crate
     /// like `descriptor.proto`
     pub inside_protobuf: Option<bool>,
+    pub custom_derive: Option<Vec<String>>,
+    pub custom_use: Option<Vec<String>>,
 
     // When adding more options please keep in sync with `parse_from_parameter` below.
     /// Make sure `Customize` is always used with `..Default::default()`
@@ -157,6 +159,8 @@ pub fn customize_from_rustproto_for_message(source: &MessageOptions) -> Customiz
     let lite_runtime = None;
     let gen_mod_rs = None;
     let inside_protobuf = None;
+    let custom_derive = None;
+    let custom_use = None;
     Customize {
         expose_oneof,
         expose_fields,
@@ -169,6 +173,8 @@ pub fn customize_from_rustproto_for_message(source: &MessageOptions) -> Customiz
         lite_runtime,
         gen_mod_rs,
         inside_protobuf,
+        custom_derive,
+        custom_use,
         _future_options: (),
     }
 }
@@ -186,6 +192,8 @@ pub fn customize_from_rustproto_for_field(source: &FieldOptions) -> Customize {
     let lite_runtime = None;
     let gen_mod_rs = None;
     let inside_protobuf = None;
+    let custom_derive = None;
+    let custom_use = None;
     Customize {
         expose_oneof,
         expose_fields,
@@ -198,6 +206,8 @@ pub fn customize_from_rustproto_for_field(source: &FieldOptions) -> Customize {
         lite_runtime,
         gen_mod_rs,
         inside_protobuf,
+        custom_derive,
+        custom_use,
         _future_options: (),
     }
 }
@@ -214,6 +224,8 @@ pub fn customize_from_rustproto_for_file(source: &FileOptions) -> Customize {
     let lite_runtime = rustproto::exts::lite_runtime_all.get(source);
     let gen_mod_rs = None;
     let inside_protobuf = None;
+    let custom_derive = None;
+    let custom_use = None;
     Customize {
         expose_oneof,
         expose_fields,
@@ -226,6 +238,8 @@ pub fn customize_from_rustproto_for_file(source: &FileOptions) -> Customize {
         lite_runtime,
         inside_protobuf,
         gen_mod_rs,
+        custom_derive,
+        custom_use,
         _future_options: (),
     }
 }

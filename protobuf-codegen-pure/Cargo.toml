@@ -17,6 +17,7 @@ doctest = false
 bench = false
 
 [dependencies]
+paperclip = { version = "0.5", features = ["actix-nightly"] }
 protobuf = { path = "../protobuf", version = "=3.0.0-pre" }
 protobuf-codegen = { path = "../protobuf-codegen", version = "=3.0.0-pre" }
 

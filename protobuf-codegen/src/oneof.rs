@@ -231,7 +231,12 @@ impl<'a> OneofGen<'a> {
     }
 
     fn write_enum(&self, w: &mut CodeWriter) {
-        let derive = vec!["Clone", "PartialEq", "Debug"];
+        let mut derive = vec!["Clone", "PartialEq", "Debug"];
+        if let Some(custom_derive) = self.customize.custom_derive.as_ref() {
+            custom_derive.iter().for_each(|d| {
+                derive.push(d);
+            });
+        }
         w.derive(&derive);
         serde::write_serde_attr(w, &self.customize, "derive(Serialize, Deserialize)");
         w.pub_enum(&self.oneof.rust_name().ident.to_string(), |w| {
